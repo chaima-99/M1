@@ -93,7 +93,7 @@ const Home = () => {
               <button
                 className="text-white px-8 py-4 text-xl font-bold rounded-2xl shadow-lg hover:bg-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
                 style={{ backgroundColor: '#9D8CFF' }}
-                onClick={() => {navigate('/login')
+                onClick={() => {navigate('/welcome')
                   console.log('Get Started clicked')
                 }}
               >
@@ -225,11 +225,11 @@ const Home = () => {
                 Ready For Your Next Challenge?
               </h2>
               <button
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/quiz')}
                 className="bg-white px-10 py-4 text-lg font-bold rounded-2xl shadow-lg hover:bg-gray-100 hover:scale-105 hover:-translate-y-1 transition-all duration-300 uppercase tracking-wide border-2 border-white"
                 style={{ color: '#9F449F' }}
               >
-                Create New Goal
+                Start Quiz
               </button>
             </div>
           </div>

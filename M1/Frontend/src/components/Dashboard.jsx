@@ -132,7 +132,7 @@ const CourseProgress = ({ percentage }) => {
 };
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('progress');
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [data, setData] = useState(mockData);
 
@@ -168,8 +168,8 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="fixed left-0 top-0 w-16 lg:w-64 h-full bg-slate-800 text-white z-40">
+      {/* Sidebar - Adjusted for global navbar */}
+      <div className="fixed left-0 top-16 w-16 lg:w-64 h-[calc(100vh-4rem)] bg-slate-800 text-white z-40">
         {/* Logo */}
         <div className="p-4">
           <div className="flex items-center gap-3">

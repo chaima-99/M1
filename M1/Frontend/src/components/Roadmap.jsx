@@ -367,119 +367,131 @@ const Roadmap = () => {
         </div>
       </div>
 
-      {/* Milestone Detail Modal */}
-      {selectedMilestone && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-start justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${selectedMilestone.color} flex items-center justify-center shadow-2xl`}>
+      {/* Milestone Detail Side Panel (Drawer) */}
+      <div 
+        className={`fixed top-16 bottom-0 right-0 w-full md:w-[450px] bg-white/80 backdrop-blur-xl border-l border-white/20 shadow-2xl z-50 transform transition-all duration-500 ease-in-out ${
+          selectedMilestone ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {selectedMilestone && (
+          <div className="h-full flex flex-col">
+            {/* Header */}
+            <div className={`p-6 bg-gradient-to-r ${selectedMilestone.color} text-white relative`}>
+              <button
+                onClick={() => setSelectedMilestone(null)}
+                className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+              <div className="flex items-center gap-4 mt-4">
+                <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center shadow-inner">
                   {getStatusIcon(selectedMilestone.status)}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800">{selectedMilestone.title}</h3>
-                  <p className="text-gray-600 mt-1">{selectedMilestone.description}</p>
+                  <h3 className="text-2xl font-bold">{selectedMilestone.title}</h3>
+                  <p className="text-white/80 text-sm mt-1">{selectedMilestone.difficulty} Level</p>
                 </div>
               </div>
-              <button
-                onClick={() => setSelectedMilestone(null)}
-                className="text-gray-500 hover:text-gray-700 p-2"
-              >
-                <X size={24} />
-              </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gray-50 p-4 rounded-lg text-center">
-                <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">Duration</div>
-                <div className="font-semibold">{selectedMilestone.estimatedTime}</div>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg text-center">
-                <Star className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">XP Reward</div>
-                <div className="font-semibold">{selectedMilestone.xp}</div>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg text-center">
-                <Book className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">Resources</div>
-                <div className="font-semibold">{selectedMilestone.resources.length}</div>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg text-center">
-                <Target className="w-6 h-6 text-green-500 mx-auto mb-2" />
-                <div className="text-sm text-gray-600">Skills</div>
-                <div className="font-semibold">{selectedMilestone.skills.length}</div>
-              </div>
-            </div>
+            {/* Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
+              <section>
+                <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Description</h4>
+                <p className="text-gray-700 leading-relaxed">{selectedMilestone.description}</p>
+              </section>
 
-            {/* Skills */}
-            <div className="mb-6">
-              <h4 className="text-lg font-semibold text-gray-800 mb-3">Skills You'll Learn</h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedMilestone.skills.map((skill, index) => (
-                  <span key={index} className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Resources */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-800 mb-4">Learning Resources</h4>
-              <div className="space-y-3">
-                {selectedMilestone.resources.map((resource, index) => (
-                  <div key={index} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group">
-                    <div className="flex-shrink-0">
-                      {getResourceIcon(resource.type)}
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="font-medium text-gray-800">{resource.title}</h5>
-                      <div className="text-sm text-gray-600">
-                        {resource.duration && `Duration: ${resource.duration}`}
-                        {resource.readTime && `Read time: ${resource.readTime}`}
-                        {resource.exercises && `${resource.exercises} exercises`}
-                        {resource.complexity && `Complexity: ${resource.complexity}`}
-                        {resource.questions && `${resource.questions} questions`}
-                        {resource.deliverables && `${resource.deliverables} deliverables`}
-                        {resource.commitment && `Commitment: ${resource.commitment}`}
-                      </div>
-                    </div>
-                    <button className="text-purple-600 hover:text-purple-800 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ExternalLink size={16} />
-                    </button>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg"><Clock className="w-5 h-5 text-blue-600" /></div>
+                  <div>
+                    <div className="text-[10px] text-blue-600 font-bold uppercase">Duration</div>
+                    <div className="font-bold text-gray-800">{selectedMilestone.estimatedTime}</div>
                   </div>
-                ))}
+                </div>
+                <div className="bg-yellow-50/50 p-4 rounded-2xl border border-yellow-100 flex items-center gap-3">
+                  <div className="p-2 bg-yellow-100 rounded-lg"><Star className="w-5 h-5 text-yellow-600" /></div>
+                  <div>
+                    <div className="text-[10px] text-yellow-600 font-bold uppercase">Reward</div>
+                    <div className="font-bold text-gray-800">{selectedMilestone.xp} XP</div>
+                  </div>
+                </div>
               </div>
+
+              {/* Skills */}
+              <section>
+                <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Skills Gained</h4>
+                <div className="flex flex-wrap gap-2">
+                  {selectedMilestone.skills.map((skill, index) => (
+                    <span key={index} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-xl text-xs font-semibold border border-gray-200">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </section>
+
+              {/* Resources */}
+              <section>
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Learning Materials</h4>
+                  <span className="text-xs bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full font-bold">
+                    {selectedMilestone.resources.length} ITEMS
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {selectedMilestone.resources.map((resource, index) => (
+                    <div key={index} className="flex items-center gap-4 p-4 bg-gray-50/50 border border-gray-100 rounded-2xl hover:bg-white hover:border-purple-200 hover:shadow-md transition-all group cursor-pointer">
+                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                        {getResourceIcon(resource.type)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h5 className="font-bold text-gray-800 text-sm truncate">{resource.title}</h5>
+                        <p className="text-[10px] text-gray-500 mt-0.5">
+                          {resource.duration || resource.readTime || resource.exercises || resource.complexity || 'Educational Resource'}
+                        </p>
+                      </div>
+                      <ExternalLink size={14} className="text-gray-300 group-hover:text-purple-600 transition-colors" />
+                    </div>
+                  ))}
+                </div>
+              </section>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-4">
-              {selectedMilestone.status !== 'locked' && (
+            {/* Actions */}
+            <div className="p-6 bg-gray-50 border-t border-gray-100">
+              {selectedMilestone.status !== 'locked' ? (
                 <button
                   onClick={() => {
                     toggleMilestoneStatus(selectedMilestone.id);
                     setSelectedMilestone(null);
                   }}
-                  className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all ${
+                  className={`w-full py-4 rounded-2xl font-bold text-sm shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] ${
                     selectedMilestone.status === 'completed'
-                      ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-gray-800 text-white hover:bg-gray-900'
                       : 'bg-green-600 text-white hover:bg-green-700'
                   }`}
                 >
-                  {selectedMilestone.status === 'completed' ? 'Mark as Incomplete' : 'Mark as Complete'}
+                  {selectedMilestone.status === 'completed' ? 'MARK AS INCOMPLETE' : 'COMPLETE MILESTONE'}
                 </button>
+              ) : (
+                <div className="text-center p-4 bg-gray-100 rounded-2xl border border-gray-200">
+                  <p className="text-gray-500 text-xs font-bold uppercase flex items-center justify-center gap-2">
+                    <Clock size={14} /> Finish previous milestones to unlock
+                  </p>
+                </div>
               )}
-              <button
-                onClick={() => setSelectedMilestone(null)}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
-              >
-                Close
-              </button>
             </div>
           </div>
-        </div>
+        )}
+      </div>
+
+      {/* Backdrop for mobile */}
+      {selectedMilestone && (
+        <div 
+          className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-40 md:hidden"
+          onClick={() => setSelectedMilestone(null)}
+        />
       )}
     </div>
   );

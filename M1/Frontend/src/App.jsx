@@ -8,6 +8,7 @@ import SignUpPage from './components/SignUpPage';
 import Quiz from './components/Quiz';
 import Dashboard from './components/Dashboard';
 import Home from './components/Home';
+import Navbar from './components/Navbar';
 
 function App() {
   useEffect(() => {
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
@@ -29,7 +31,7 @@ function App() {
         <Route path="/dashboard" element={ <Dashboard /> } /> 
 
         {/* Add more routes as needed */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
